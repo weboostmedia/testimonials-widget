@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Testimonials Carousel</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+  />
+  <style>
+    body { margin:0; background:#f4f5f7; font-family:sans-serif }
+    .swiper { width:100%; height:320px }
+    .swiper-slide {
+      display:flex; align-items:center;
+      padding:20px; background:#fff;
+      border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .testimonial-content { margin-left:15px }
+    .testimonial-content h4 { margin:0 0 6px; font-size:16px }
+    .testimonial-content p { margin:0; font-size:14px; color:#555 }
+  </style>
+</head>
+<body>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <!-- Slide #1 -->
+      <div class="swiper-slide">
+        <img src="https://via.placeholder.com/48" alt="Mehwish" style="border-radius:50%"/>
+        <div class="testimonial-content">
+          <h4>Mehwish</h4>
+          <p>“Compliment interested discretion estimating on stimulated apartments oh.”</p>
+        </div>
+      </div>
+      <!-- Slide #2 -->
+      <div class="swiper-slide">
+        <img src="https://via.placeholder.com/48" alt="Elizabeth" style="border-radius:50%"/>
+        <div class="testimonial-content">
+          <h4>Elizabeth Jeff</h4>
+          <p>“Dear so sing when in find read of call. As distrusts behaviour abilities defective is.”</p>
+        </div>
+      </div>
+      <!-- Slide #3 -->
+      <div class="swiper-slide">
+        <img src="https://via.placeholder.com/48" alt="Emily" style="border-radius:50%"/>
+        <div class="testimonial-content">
+          <h4>Emily Thomas</h4>
+          <p>“Never at water me might. On formed merits hunted unable merely by mr whence or.”</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper('.swiper', {
+      direction: 'vertical',
+      loop: true,
+      autoplay: { delay: 4000 },
+      mousewheel: true,
+      slidesPerView: 1,
+      spaceBetween: 20
+    });
+  </script>
+</body>
+</html>
