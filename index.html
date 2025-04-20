@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <title>3D Vertical Testimonial Carousel</title>
-
-  <!-- Swiper CSS (if still needed for fallback, optional) -->
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/> -->
-
+  <meta charset="UTF-8" />
+  <title>Vertical 3D Testimonial Carousel</title>
   <style>
     :root {
-      --cell-count: 3; /* number of testimonials */
-      --cell-size: 240px; /* height of each slide */
+      --cell-count: 3; /* total testimonials */
+      --cell-size: 240px; /* slide height */
       --theta: calc(360deg / var(--cell-count));
       --apothem: calc((var(--cell-size) / 2) / tan((1turn / var(--cell-count)) / 2));
-      --active: 1; /* start with first slide active */
+      --active: 1; /* which slide is emphasized */
     }
 
     body {
@@ -25,9 +21,7 @@
     .scene {
       width: 100%;
       height: var(--cell-size);
-      perspective: 1000px;
-      overflow: visible;
-      position: relative;
+      perspective: 1000px; /* depth */
     }
 
     .carousel {
@@ -45,12 +39,12 @@
       width: 80%;
       height: var(--cell-size);
       margin: calc(-1 * var(--cell-size) / 2) 0 0 calc(-40%);
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       display: flex;
       align-items: center;
       justify-content: center;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       backface-visibility: hidden;
       opacity: 0.5;
       transform: 
@@ -59,22 +53,23 @@
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
+    /* Highlight the active slide */
     .carousel__cell:nth-child(var(--active)) {
       opacity: 1;
-      transform: 
-        rotateX(calc((var(--active) - 1) * var(--theta))) 
-        translateZ(var(--apothem)) 
+      transform:
+        rotateX(calc((var(--active) - 1) * var(--theta)))
+        translateZ(var(--apothem))
         scale(1.1);
     }
 
     @keyframes rotateX-auto {
-      from   { transform: rotateX(0deg); }
-      to     { transform: rotateX(-360deg); }
+      from { transform: rotateX(0deg); }
+      to   { transform: rotateX(-360deg); }
     }
 
     .testimonial-content {
       text-align: center;
-      padding: 0 10px;
+      padding: 0 16px;
     }
     .testimonial-content h4 {
       margin: 0 0 8px;
@@ -113,20 +108,19 @@
   </div>
 
   <script>
-    // Assign each cell its index for CSS variable
+    // Tag each cell with its index for rotation
     const cells = document.querySelectorAll('.carousel__cell');
     cells.forEach((cell, i) => {
       cell.style.setProperty('--index', i);
     });
 
-    // Auto-update active slide every 4 seconds
+    // Every 4 seconds, advance the active slide
     let active = 1;
-    const cellCount = cells.length;
+    const count = cells.length;
     setInterval(() => {
-      active = (active % cellCount) + 1;
+      active = (active % count) + 1;
       document.documentElement.style.setProperty('--active', active);
     }, 4000);
   </script>
 </body>
 </html>
-
