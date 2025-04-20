@@ -2,80 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Testimonials Carousel</title>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-  />
+  <title>3D Vertical Testimonial Carousel</title>
+
+  <!-- Swiper CSS (if still needed for fallback, optional) -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/> -->
+
   <style>
+    :root {
+      --cell-count: 3; /* number of testimonials */
+      --cell-size: 240px; /* height of each slide */
+      --theta: calc(360deg / var(--cell-count));
+      --apothem: calc((var(--cell-size) / 2) / tan((1turn / var(--cell-count)) / 2));
+      --active: 1; /* start with first slide active */
+    }
+
     body {
       margin: 0;
       background: #f4f5f7;
       font-family: sans-serif;
     }
 
-    .swiper {
+    .scene {
       width: 100%;
-      height: 600px;
+      height: var(--cell-size);
+      perspective: 1000px;
+      overflow: visible;
+      position: relative;
     }
 
-    .swiper-slide {
-      display: flex;
-      align-items: center;
-      padding: 20px;
+    .carousel {
+      width: 100%;
+      height: var(--cell-size);
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateX-auto 12s infinite linear;
+    }
+
+    .carousel__cell {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      height: var(--cell-size);
+      margin: calc(-1 * var(--cell-size) / 2) 0 0 calc(-40%);
       background: white;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
-      opacity: 0.3;
-      transform: scale(0.8);
-      transition: transform 0.4s ease, opacity 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      opacity: 0.5;
+      transform: 
+        rotateX(calc(var(--index) * var(--theta))) 
+        translateZ(var(--apothem));
+      transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
-    .swiper-slide-active {
+    .carousel__cell:nth-child(var(--active)) {
       opacity: 1;
-      transform: scale(1);
+      transform: 
+        rotateX(calc((var(--active) - 1) * var(--theta))) 
+        translateZ(var(--apothem)) 
+        scale(1.1);
     }
 
-    .swiper-slide-next,
-    .swiper-slide-prev {
-      opacity: 0.6;
-      transform: scale(0.9);
+    @keyframes rotateX-auto {
+      from   { transform: rotateX(0deg); }
+      to     { transform: rotateX(-360deg); }
     }
 
     .testimonial-content {
-      margin-left: 15px;
+      text-align: center;
+      padding: 0 10px;
     }
     .testimonial-content h4 {
-      margin: 0 0 6px;
-      font-size: 16px;
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #333;
     }
     .testimonial-content p {
       margin: 0;
       font-size: 14px;
-      color: #555;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="https://via.placeholder.com/48" alt="Mehwish" style="border-radius:50%"/>
+  <div class="scene">
+    <div class="carousel">
+      <div class="carousel__cell">
         <div class="testimonial-content">
           <h4>Mehwish</h4>
           <p>“Compliment interested discretion estimating on stimulated apartments oh.”</p>
         </div>
       </div>
-      <div class="swiper-slide">
-        <img src="https://via.placeholder.com/48" alt="Elizabeth" style="border-radius:50%"/>
+      <div class="carousel__cell">
         <div class="testimonial-content">
           <h4>Elizabeth Jeff</h4>
           <p>“Dear so sing when in find read of call. As distrusts behaviour abilities defective is.”</p>
         </div>
       </div>
-      <div class="swiper-slide">
-        <img src="https://via.placeholder.com/48" alt="Emily" style="border-radius:50%"/>
+      <div class="carousel__cell">
         <div class="testimonial-content">
           <h4>Emily Thomas</h4>
           <p>“Never at water me might. On formed merits hunted unable merely by mr whence or.”</p>
@@ -84,17 +112,21 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script>
-    new Swiper('.swiper', {
-      direction: 'vertical',
-      loop: true,
-      centeredSlides: true,
-      slidesPerView: 3,
-      spaceBetween: 20,
-      autoplay: { delay: 4000 },
-      mousewheel: true,
+    // Assign each cell its index for CSS variable
+    const cells = document.querySelectorAll('.carousel__cell');
+    cells.forEach((cell, i) => {
+      cell.style.setProperty('--index', i);
     });
+
+    // Auto-update active slide every 4 seconds
+    let active = 1;
+    const cellCount = cells.length;
+    setInterval(() => {
+      active = (active % cellCount) + 1;
+      document.documentElement.style.setProperty('--active', active);
+    }, 4000);
   </script>
 </body>
 </html>
+
